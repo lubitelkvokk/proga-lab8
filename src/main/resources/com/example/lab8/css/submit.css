@@ -1,0 +1,11 @@
+.button {
+    -fx-background-color: black;
+    -fx-border-color: green;
+    /*-fx-background-radius: 50;*/
+    -fx-focus-color: transparent; /* отключение эффекта фокуса */
+}
+
+.button:armed {
+    -fx-background-color: green;
+    -fx-border-color: black;
+}
