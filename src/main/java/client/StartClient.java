@@ -34,7 +34,8 @@ public class StartClient extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/lab8/LoginPage.fxml"));
+
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/lab8/MainPageNew.fxml"));
         stage.setScene(new Scene(root));
         mainStage = stage;
         mainStage.show();

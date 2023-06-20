@@ -12,10 +12,12 @@ public class ResourceBundleSingleton {
     }
 
     public static ResourceBundle getResourceBundle(){
+
         if (resourceBundle == null){
             resourceBundle = ResourceBundle.
                     getBundle("com.example.lab8.locale.locale",Locale.ENGLISH);
         }
+//        System.out.println(resourceBundle.getLocale());
         return resourceBundle;
     }
 }

@@ -16,9 +16,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LoginController">
+<HBox style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LoginController">
    <children>
-      <AnchorPane prefHeight="402.0" prefWidth="179.0" style="-fx-background-color: black;">
+      <AnchorPane style="-fx-background-color: black;" HBox.hgrow="ALWAYS">
          <children>
             <ImageView fitHeight="394.0" fitWidth="181.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -35,7 +35,7 @@
             </ComboBox>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="400.0" prefWidth="215.0" style="-fx-background-color: linear-gradient(to right,black, rgb(5,12,4));;">
+      <AnchorPane style="-fx-background-color: linear-gradient(to right,black, rgb(5,12,4));;" HBox.hgrow="ALWAYS">
          <children>
             <TextField fx:id="login" layoutX="26.0" layoutY="148.0" prefHeight="34.0" prefWidth="150.0" promptText="LOGIN" stylesheets="@css/text.css">
                <styleClass>
@@ -45,7 +45,7 @@
                <font>
                   <Font size="24.0" />
                </font></TextField>
-            <Button layoutX="26.0" layoutY="293.0" mnemonicParsing="false" onAction="#submitLogin" prefHeight="51.0" prefWidth="150.0" style="-fx-background-color: black;" stylesheets="@css/text.css" text="SUBMIT">
+            <Button fx:id="submitLogin" layoutX="26.0" layoutY="293.0" mnemonicParsing="false" onAction="#submitLogin" prefHeight="51.0" prefWidth="150.0" style="-fx-background-color: black;" stylesheets="@css/text.css" text="SUBMIT">
                <effect>
                   <DropShadow />
                </effect>
@@ -72,12 +72,18 @@
                   <String fx:value="glow-effect" />
                </styleClass>
             </Label>
+            <Button fx:id="register" layoutX="60.0" layoutY="360.0" mnemonicParsing="false" onAction="#submitRegister" style="-fx-background-color: black;" stylesheets="@css/text.css" text="CREATE USER">
+               <styleClass>
+                  <String fx:value="glow-effect" />
+                  <String fx:value="text" />
+               </styleClass>
+            </Button>
          </children>
          <effect>
             <Glow />
          </effect>
       </AnchorPane>
-      <AnchorPane prefHeight="400.0" prefWidth="224.0" style="-fx-background-color: rgb(5,12,4);">
+      <AnchorPane style="-fx-background-color: rgb(5,12,4);" HBox.hgrow="ALWAYS">
          <children>
             <ImageView fitHeight="268.0" fitWidth="180.0" layoutX="36.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                <image>

@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -39,6 +40,12 @@ public class LoginController implements Initializable {
     @FXML
     private ComboBox<String> languages;
 
+
+    @FXML
+    private Button submitLogin;
+    @FXML
+    private Button register;
+
     @FXML
     private void submitLogin() throws IOException, ClassNotFoundException {
 
@@ -60,7 +67,9 @@ public class LoginController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         languages.getItems().addAll(Languages.getLanguages());
         languages.setOnAction(this::changeLanguage);
+
     }
+
 
     public void changeLanguage(ActionEvent event){
         String language = languages.getValue();
@@ -69,8 +78,13 @@ public class LoginController implements Initializable {
         welcome.setText(resourceBundle.getString("welcome"));
         login.setText(resourceBundle.getString("login"));
         password.setText(resourceBundle.getString("password"));
+        submitLogin.setText(resourceBundle.getString("submitLogin"));
+        register.setText(resourceBundle.getString("register"));
     }
 
-
+    @FXML
+    private void submitRegister() throws IOException {
+        StartClient.changeScene("/com/example/lab8/RegisterPage.fxml");
+    }
 
 }
