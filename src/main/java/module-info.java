@@ -3,6 +3,9 @@ module client {
     requires javafx.fxml;
     requires javafx.controls;
     requires lombok;
+    requires jdk.jsobject;
+    requires javafx.web;
+    requires java.desktop;
 
     opens mid.data to java.base;
     exports mid.data;

@@ -37,6 +37,8 @@ public class StudyGroupTableView {
     private Integer zLocation;
     private String nameLocation; //Длина строки не должна быть больше 797, Поле может быть null
 
-    private User user;
+    private String username;
+    private Integer user_id;
+    private String password;
 
 }

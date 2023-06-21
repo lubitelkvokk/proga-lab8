@@ -7,6 +7,7 @@ import client.global.ResourceBundleSingleton;
 import client.global.UserAuth;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -98,15 +99,27 @@ public class MainPageNewController implements Initializable {
     @FXML
     private Button minByNameButton;
 
+    @FXML
+    private Label currentUser;
+
+    @FXML
+    private Label user;
+
+    @FXML
+    private Button visualButton;
+
+    private SortedList<StudyGroupTableView> sortedList;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        user.setText(UserAuth.getUser().getLogin());
         initializeLanguages();
         languages.setOnAction(this::changeLanguage);
-        UserAuth.setUser(new User("VASYAAAAA", "bibaboba"));
+        languageValuesInit();
+//        UserAuth.setUser(new User("VASYAAAAA", "bibaboba"));
         try {
             refreshTable();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
@@ -126,6 +139,12 @@ public class MainPageNewController implements Initializable {
         TableColumn<StudyGroupTableView, Integer> idColumn = new TableColumn<>("id");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         studyGroupsTable.getColumns().add(idColumn);
+
+        // столбец для имени владельца
+        TableColumn<StudyGroupTableView, String> userColumn = new TableColumn<>("user");
+        userColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+        studyGroupsTable.getColumns().add(userColumn);
+
 
         // столбец для вывода названия группы
         TableColumn<StudyGroupTableView, String> nameColumn = new TableColumn<>("Name");
@@ -190,13 +209,10 @@ public class MainPageNewController implements Initializable {
         nameLocationColumn.setCellValueFactory(new PropertyValueFactory<>("nameLocation"));
         studyGroupsTable.getColumns().add(nameLocationColumn);
 
-
-        // Initial filter list
-        FilteredList<StudyGroupTableView> filteredList = new FilteredList<>(studyGroupsTable.getItems(), b -> true);
         inputSearchingGroup.textProperty().addListener((observable, oldValue, newValue) ->
         {
             filteredList.setPredicate(studyGroupSearchModel -> {
-                if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                if (newValue.isEmpty() || newValue.isBlank()) {
                     return true;
                 }
                 String searchKeyword = newValue.toLowerCase();
@@ -204,21 +220,25 @@ public class MainPageNewController implements Initializable {
                 if (studyGroupSearchModel.getName().toLowerCase().contains(searchKeyword)) {
                     return true;
                 }
+
+                if (studyGroupSearchModel.getUsername().toLowerCase().equals(searchKeyword)){
+                    return true;
+                }
                 return false;
             });
         });
+        sortedList = new SortedList<>(filteredList);
+        try {
+            sortedList.comparatorProperty().bind(studyGroupsTable.comparatorProperty());
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
-        SortedList<StudyGroupTableView> sortedList = new SortedList<>(filteredList);
-
-        sortedList.comparatorProperty().bind(studyGroupsTable.comparatorProperty());
-
-        studyGroupsTable.setItems(sortedList);
     }
 
+    private FilteredList<StudyGroupTableView> filteredList = null;
 
     private void refreshTable() throws IOException, ClassNotFoundException {
-
-
         Message message = new Message(CommandsEnum.SHOW);
         Message response = null;
         try {
@@ -227,12 +247,21 @@ public class MainPageNewController implements Initializable {
             for (StudyGroup x : response.getStudyGroups()) {
                 studyGroupTableViews.add(StudyGroupToTableViewConverter.getTableView(x));
             }
-            this.studyGroupTableViews = FXCollections.observableList(studyGroupTableViews);
-            studyGroupsTable.setItems(this.studyGroupTableViews);
-        } catch (IOException | ClassNotFoundException | NullPointerException e) {
+            // Create new filtered list with current predicate
+            FilteredList<StudyGroupTableView> newFilteredList = new FilteredList<>(FXCollections.observableList(studyGroupTableViews), b -> true);
+            if (filteredList != null) {
+                newFilteredList.setPredicate(filteredList.getPredicate());
+            }
+            // Replace old filtered list with new filtered list
+            filteredList = newFilteredList;
+            Platform.runLater(() -> {
+                sortedList = new SortedList<>(filteredList);
+                sortedList.comparatorProperty().bind(studyGroupsTable.comparatorProperty());
+                studyGroupsTable.setItems(sortedList);
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -256,11 +285,7 @@ public class MainPageNewController implements Initializable {
                                 MessageFabric.createMessage(
                                         CommandsEnum.REMOVE_BY_ID,
                                         id_db));
-        if (!response.getCommand().equals(CommandsEnum.RESPONSE_ERR)) {
-            studyGroupTableViews.remove(id);
-            studyGroupsTable.setItems(studyGroupTableViews);
-
-        } else {
+        if (response.getCommand().equals(CommandsEnum.RESPONSE_ERR)){
             Alert alert = new Alert(Alert.AlertType.ERROR, ResourceBundleSingleton.getResourceBundle().getString("removeByIdError"));
             alert.show();
         }
@@ -317,8 +342,13 @@ public class MainPageNewController implements Initializable {
         String language = languages.getValue();
         System.out.println(language);
         ResourceBundleSingleton.setResourceBundle(BundleFabric.getLocale("com.example.lab8.locale.locale", language));
+        languageValuesInit();
+    }
+
+    private void languageValuesInit(){
         ResourceBundle resourceBundle = ResourceBundleSingleton.getResourceBundle();
         addButton.setText(resourceBundle.getString("addButton"));
+        addIfMinButton.setText(resourceBundle.getString("addIfMinButton"));
         removeButton.setText(resourceBundle.getString("removeButton"));
         editButton.setText(resourceBundle.getString("editButton"));
         infoButton.setText(resourceBundle.getString("infoButton"));
@@ -326,7 +356,9 @@ public class MainPageNewController implements Initializable {
         clearButton.setText(resourceBundle.getString("clearButton"));
         removeGreaterButton.setText(resourceBundle.getString("removeGreaterButton"));
         sumOfShouldBeExpelledButton.setText(resourceBundle.getString("sumOfShouldBeExpelledButton"));
+        minByNameButton.setText(resourceBundle.getString("minByNameButton"));
         averageOfShouldBeExpelledButton.setText(resourceBundle.getString("averageOfShouldBeExpelledButton"));
+        currentUser.setText(resourceBundle.getString("currentUser"));
     }
 
     @FXML
@@ -409,16 +441,18 @@ public class MainPageNewController implements Initializable {
     }
 
     @FXML
-    private void minByName(){
+    private void minByName() {
         Message request = MessageFabric.createMessage(CommandsEnum.MIN_BY_NAME);
         try {
             Message response = StartClient.sendMessageAndGetResponse(request);
 
             Alert alert;
-            if (response.getCommand().equals(CommandsEnum.RESPONSE_ERR)){
-                alert = new Alert(Alert.AlertType.ERROR, response.getData());
-            } else{
-                alert = new Alert(Alert.AlertType.INFORMATION, response.getStudyGroup().toString());
+            if (response.getCommand().equals(CommandsEnum.RESPONSE_ERR)) {
+                alert = new Alert(Alert.AlertType.ERROR,
+                        ResourceBundleSingleton.getResourceBundle().getString(response.getData()));
+            } else {
+                alert = new Alert(Alert.AlertType.INFORMATION,
+                        response.getStudyGroup().toString());
             }
             alert.show();
         } catch (IOException | ClassNotFoundException e) {
@@ -426,6 +460,14 @@ public class MainPageNewController implements Initializable {
                     ResourceBundleSingleton.getResourceBundle().getString("serverUnavailable"));
             alert.show();
         }
+    }
+
+    @FXML
+    private void getVisualPage() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/lab8/MapPage.fxml"));
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
 }

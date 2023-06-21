@@ -30,7 +30,11 @@ public class TableViewToStudyGroup {
         location.setName(studyGroupTableView.getNameLocation());
         groupAdmin.setLocation(location);
         studyGroup.setGroupAdmin(groupAdmin);
-        studyGroup.setUser(studyGroupTableView.getUser());
+        User user = new User();
+        user.setLogin(studyGroupTableView.getUsername());
+        user.setId(studyGroupTableView.getUser_id());
+        user.setPassword(studyGroupTableView.getPassword());
+        studyGroup.setUser(user);
         studyGroup.setId(studyGroupTableView.getId());
         return studyGroup;
     }

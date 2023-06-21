@@ -66,7 +66,8 @@ public class RegisterController implements Initializable {
         String language = languages.getValue();
         ResourceBundleSingleton.setResourceBundle(BundleFabric.getLocale("com.example.lab8.locale.locale", language));
         ResourceBundle resourceBundle = ResourceBundleSingleton.getResourceBundle();
+        registration.setText(resourceBundle.getString("registration"));
         login.setText(resourceBundle.getString("login"));
-        login.setText(resourceBundle.getString("password"));
+        password.setText(resourceBundle.getString("password"));
     }
 }

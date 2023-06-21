@@ -8,10 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import mid.commands.CommandsEnum;
 import mid.data.*;
 import mid.data.processing.StudyGroupProcessing;
@@ -97,6 +94,9 @@ public class RemoveGreaterStudyGroupController implements Initializable {
     private TextField xStudyGroup;
 
     @FXML
+    private Label xStudyGroupException;
+
+    @FXML
     private TextField yLocation;
 
     @FXML
@@ -148,7 +148,7 @@ public class RemoveGreaterStudyGroupController implements Initializable {
             studyGroup.setName(nameStudyGroup.getText());
             studyGroupProcessing.checkNameStudyGroup(studyGroup.getName());
             nameStudyGroupException.setText("");
-        } catch (InputException e){
+        } catch (InputException e) {
             indicator = true;
             nameStudyGroupException.setText(e.getMessage());
         }
@@ -160,7 +160,7 @@ public class RemoveGreaterStudyGroupController implements Initializable {
         } catch (InputException e) {
             indicator = true;
             studentsCountStudyGroupException.setText(e.getMessage());
-        } catch (Exception e){
+        } catch (Exception e) {
             indicator = true;
             studentsCountStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString("nullFieldException"));
         }
@@ -172,7 +172,7 @@ public class RemoveGreaterStudyGroupController implements Initializable {
         } catch (InputException e) {
             indicator = true;
             transferredStudentsStudyGroupException.setText(e.getMessage());
-        }  catch (Exception e){
+        } catch (Exception e) {
             indicator = true;
             transferredStudentsStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString("nullFieldException"));
         }
@@ -184,7 +184,7 @@ public class RemoveGreaterStudyGroupController implements Initializable {
         } catch (InputException e) {
             indicator = true;
             shouldBeExpelledStudyGroupException.setText(e.getMessage());
-        }  catch (Exception e){
+        } catch (Exception e) {
             indicator = true;
             shouldBeExpelledStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString("nullFieldException"));
         }
@@ -193,24 +193,32 @@ public class RemoveGreaterStudyGroupController implements Initializable {
             studyGroup.setSemesterEnum(semesterStudyGroup.getValue());
             studyGroupProcessing.checkSemesterEnumStudyGroup(studyGroup);
             semesterStudyGroupException.setText("");
-        } catch (Exception e){
+        } catch (Exception e) {
             indicator = true;
             semesterStudyGroupException.setText(e.getMessage());
         }
         // Enter a coordinates
         Coordinates coordinates = new Coordinates();
         try {
+            if (xStudyGroup.getText().isBlank()){
+                throw new InputException("nullFieldException");
+            }
+            studyGroupProcessing.checkXStudyGroup(Integer.parseInt(xStudyGroup.getText()));
             coordinates.setX(Long.parseLong(xStudyGroup.getText()));
         } catch (Exception e) {
-            coordinates.setX(0L);
+            indicator = true;
+            xStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString(e.getMessage()));
         }
         try {
+            if (yStudyGroup.getText().isBlank()){
+                throw new InputException("nullFieldException");
+            }
             coordinates.setY(Double.parseDouble(yStudyGroup.getText()));
             studyGroupProcessing.checkYCoordinatesStudyGroup(coordinates.getY());
             yStudyGroupException.setText("");
         } catch (InputException e) {
             indicator = true;
-            yStudyGroupException.setText(e.getMessage());
+            yStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString(e.getMessage()));
         } catch (Exception e){
             indicator = true;
             yStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString("nullFieldException"));
@@ -220,7 +228,7 @@ public class RemoveGreaterStudyGroupController implements Initializable {
         Person person = new Person();
 
         // Enter the name of the study group admin
-        try{
+        try {
             String name = nameGroupAdmin.getText();
             studyGroupProcessing.nameOfGroupAdmin(name);
             person.setName(name);
@@ -230,19 +238,19 @@ public class RemoveGreaterStudyGroupController implements Initializable {
             nameGroupAdminException.setText(e.getMessage());
         }
 
-        try{
+        try {
             long height = Long.parseLong(heightGroupAdmin.getText());
             studyGroupProcessing.heightGroupAdmin(height);
             person.setHeight(height);
             heightGroupAdminException.setText("");
-        } catch (InputException e){
+        } catch (InputException e) {
             heightGroupAdminException.setText(e.getMessage());
-        } catch (Exception e){
+        } catch (Exception e) {
             indicator = true;
             heightGroupAdminException.setText(ResourceBundleSingleton.getResourceBundle().getString("numericTypeException"));
         }
 
-        try{
+        try {
             String passport = passportIdGroupAdmin.getText();
             studyGroupProcessing.passportIdOfGroupAdmin(passport);
             person.setPassportID(passport);
@@ -251,7 +259,7 @@ public class RemoveGreaterStudyGroupController implements Initializable {
             indicator = true;
             passportIdGroupAdminException.setText(e.getMessage());
         }
-        try{
+        try {
             Color color = eyeColorGroupAdmin.getValue();
             studyGroupProcessing.eyeColorGroupAdmin(color);
             person.setEyeColor(color);
@@ -262,21 +270,23 @@ public class RemoveGreaterStudyGroupController implements Initializable {
         }
 
         Location location = new Location();
-        try{
+        try {
             location.setX(Float.parseFloat(xLocation.getText()));
-        } catch (Exception e){}
-        try{
-            Float value =  Float.parseFloat(yLocation.getText());
+        } catch (Exception e) {
+        }
+        try {
+            Float value = Float.parseFloat(yLocation.getText());
             location.setY(value);
             yLocationException.setText("");
-        } catch (Exception e){
+        } catch (Exception e) {
             indicator = true;
             yLocationException.setText(ResourceBundleSingleton.getResourceBundle().getString("numericTypeException"));
         }
-        try{
+        try {
             location.setZ(Integer.parseInt(zLocation.getText()));
-        } catch (Exception e){}
-        try{
+        } catch (Exception e) {
+        }
+        try {
             String name = nameLocation.getText();
             studyGroupProcessing.nameOfGroupAdmin(name);
             location.setName(name);
@@ -292,18 +302,26 @@ public class RemoveGreaterStudyGroupController implements Initializable {
             Message request = MessageFabric.createMessage(CommandsEnum.REMOVE_GREATER, studyGroup);
             try {
                 Message serverResponse = StartClient.sendMessageAndGetResponse(request);
-                response.setText(serverResponse.getData());
-                if (!serverResponse.getCommand().equals(CommandsEnum.RESPONSE_ERR)){
+//                response.setText(serverResponse.getData());
+
+                if (!serverResponse.getCommand().equals(CommandsEnum.RESPONSE_ERR)) {
                     clearTextFields();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                            ResourceBundleSingleton.getResourceBundle().getString(serverResponse.getData()));
+                    alert.show();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR,
+                            ResourceBundleSingleton.getResourceBundle().getString(serverResponse.getData()));
+                    alert.show();
                 }
-            } catch (IOException | ClassNotFoundException e){
+            } catch (IOException | ClassNotFoundException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
 
-    private void clearTextFields(){
+    private void clearTextFields() {
         nameStudyGroup.setText("");
         studentsCountStudyGroup.setText("");
         shouldBeExpelledStudyGroup.setText("");

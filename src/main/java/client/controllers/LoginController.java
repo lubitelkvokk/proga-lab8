@@ -54,9 +54,10 @@ public class LoginController implements Initializable {
         UserAuth.setUser(user);
         Message response = StartClient.sendMessageAndGetResponse(request);
         if (response.getCommand().equals(CommandsEnum.RESPONSE_ERR)) {
-            loginError.setText(response.getData());
+            loginError.setText(
+                    ResourceBundleSingleton.getResourceBundle().getString(response.getData()));
         } else {
-            StartClient.changeScene("/com/example/lab8/MainPage.fxml");
+            StartClient.changeScene("/com/example/lab8/MainPageNew.fxml");
         }
     }
 
@@ -73,6 +74,7 @@ public class LoginController implements Initializable {
 
     public void changeLanguage(ActionEvent event){
         String language = languages.getValue();
+        System.out.println(language);
         ResourceBundleSingleton.setResourceBundle(BundleFabric.getLocale("com.example.lab8.locale.locale", language));
         ResourceBundle resourceBundle = ResourceBundleSingleton.getResourceBundle();
         welcome.setText(resourceBundle.getString("welcome"));

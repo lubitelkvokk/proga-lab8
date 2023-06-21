@@ -199,5 +199,6 @@
         </Label>
         <TextField fx:id="heightGroupAdmin" layoutX="162.0" layoutY="476.0" prefHeight="26.0" prefWidth="162.0" />
         <Label fx:id="heightGroupAdminException" layoutX="360.0" layoutY="481.0" />
+      <Label layoutX="222.0" layoutY="332.0" fx:id="xStudyGroupException" />
     </children>
 </AnchorPane>

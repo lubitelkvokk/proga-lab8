@@ -25,7 +25,9 @@ public class StudyGroupToTableViewConverter {
         studyGroupTableView.setZLocation(studyGroup.getGroupAdmin().getLocation().getZ());
         studyGroupTableView.setNameLocation(studyGroup.getGroupAdmin().getLocation().getName());
         studyGroupTableView.setId(studyGroup.getId());
-        studyGroupTableView.setUser(studyGroup.getUser());
+        studyGroupTableView.setUsername(studyGroup.getUser().getLogin());
+        studyGroupTableView.setUser_id(studyGroup.getUser().getId());
+        studyGroupTableView.setPassword(studyGroup.getUser().getPassword());
         return studyGroupTableView;
     }
 }

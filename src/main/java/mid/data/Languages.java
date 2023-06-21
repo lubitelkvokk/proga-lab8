@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public enum Languages {
 
-    RU("ru"), EN("en");
+    RU("ru"), EN("en"), PT("pt");
 
     private String language;
 

@@ -95,6 +95,9 @@ public class EditingStudyGroupController implements Initializable {
     private TextField xStudyGroup;
 
     @FXML
+    private Label xStudyGroupException;
+
+    @FXML
     private TextField yLocation;
 
     @FXML
@@ -200,17 +203,25 @@ public class EditingStudyGroupController implements Initializable {
         // Enter a coordinates
         Coordinates coordinates = new Coordinates();
         try {
+            if (xStudyGroup.getText().isBlank()){
+                throw new InputException("nullFieldException");
+            }
+            studyGroupProcessing.checkXStudyGroup(Integer.parseInt(xStudyGroup.getText()));
             coordinates.setX(Long.parseLong(xStudyGroup.getText()));
         } catch (Exception e) {
-            coordinates.setX(0L);
+            indicator = true;
+            xStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString(e.getMessage()));
         }
         try {
+            if (yStudyGroup.getText().isBlank()){
+                throw new InputException("nullFieldException");
+            }
             coordinates.setY(Double.parseDouble(yStudyGroup.getText()));
             studyGroupProcessing.checkYCoordinatesStudyGroup(coordinates.getY());
             yStudyGroupException.setText("");
         } catch (InputException e) {
             indicator = true;
-            yStudyGroupException.setText(e.getMessage());
+            yStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString(e.getMessage()));
         } catch (Exception e){
             indicator = true;
             yStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString("nullFieldException"));
@@ -292,7 +303,7 @@ public class EditingStudyGroupController implements Initializable {
             Message request = MessageFabric.createMessage(CommandsEnum.UPDATE, studyGroup);
             try {
                 Message serverResponse = StartClient.sendMessageAndGetResponse(request);
-                response.setText(serverResponse.getData());
+//                response.setText(serverResponse.getData());
                 if (!serverResponse.getCommand().equals(CommandsEnum.RESPONSE_ERR)){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION,
                             ResourceBundleSingleton.getResourceBundle().getString("editingStudyGroupInformation"));

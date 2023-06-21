@@ -15,6 +15,9 @@ public class BundleFabric {
             case "en":
                 locale = Locale.ENGLISH;
                 break;
+            case "pt":
+                locale = new Locale("pt");
+                break;
             default:
                 locale = Locale.getDefault();
         }

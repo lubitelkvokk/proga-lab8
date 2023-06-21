@@ -37,7 +37,7 @@
       </AnchorPane>
       <AnchorPane style="-fx-background-color: linear-gradient(to right,black, rgb(5,12,4));;" HBox.hgrow="ALWAYS">
          <children>
-            <TextField fx:id="login" layoutX="26.0" layoutY="148.0" prefHeight="34.0" prefWidth="150.0" promptText="LOGIN" stylesheets="@css/text.css">
+            <TextField fx:id="login" layoutX="22.0" layoutY="109.0" prefHeight="34.0" prefWidth="150.0" promptText="LOGIN" stylesheets="@css/text.css">
                <styleClass>
                   <String fx:value="text" />
                   <String fx:value="glow-effect" />
@@ -57,13 +57,13 @@
                   <Font size="20.0" />
                </font>
             </Button>
-            <PasswordField fx:id="password" layoutX="25.0" layoutY="219.0" stylesheets="@css/text.css" text="PASSWORD">
+            <PasswordField fx:id="password" layoutX="22.0" layoutY="172.0" promptText="PASSWORD" stylesheets="@css/text.css">
                <styleClass>
                   <String fx:value="glow-effect" />
                   <String fx:value="text" />
                </styleClass></PasswordField>
-            <Label fx:id="loginError" alignment="CENTER" layoutX="24.0" layoutY="262.0" prefHeight="18.0" prefWidth="150.0" textFill="RED" />
-            <Label fx:id="welcome" alignment="CENTER" layoutX="8.0" layoutY="1.0" prefHeight="134.0" prefWidth="186.0" stylesheets="@css/text.css" text="WELCOME">
+            <Label fx:id="loginError" alignment="CENTER" layoutX="24.0" layoutY="214.0" prefHeight="66.0" prefWidth="150.0" textFill="RED" />
+            <Label fx:id="welcome" alignment="CENTER" layoutX="8.0" layoutY="1.0" prefHeight="95.0" prefWidth="186.0" stylesheets="@css/text.css" text="WELCOME">
                <font>
                   <Font size="30.0" />
                </font>

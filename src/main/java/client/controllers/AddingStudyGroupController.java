@@ -106,6 +106,9 @@ public class AddingStudyGroupController implements Initializable {
     private Label yStudyGroupException;
 
     @FXML
+    private Label xStudyGroupException;
+
+    @FXML
     private TextField zLocation;
 
     @FXML
@@ -142,6 +145,7 @@ public class AddingStudyGroupController implements Initializable {
         StudyGroupProcessing studyGroupProcessing = new StudyGroupProcessing();
         // Вводим название группы
         try {
+
             studyGroup.setName(nameStudyGroup.getText());
             studyGroupProcessing.checkNameStudyGroup(studyGroup.getName());
             nameStudyGroupException.setText("");
@@ -197,17 +201,25 @@ public class AddingStudyGroupController implements Initializable {
         // Enter a coordinates
         Coordinates coordinates = new Coordinates();
         try {
+            if (xStudyGroup.getText().isBlank()){
+                throw new InputException("nullFieldException");
+            }
+            studyGroupProcessing.checkXStudyGroup(Integer.parseInt(xStudyGroup.getText()));
             coordinates.setX(Long.parseLong(xStudyGroup.getText()));
         } catch (Exception e) {
-            coordinates.setX(0L);
+            indicator = true;
+            xStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString(e.getMessage()));
         }
         try {
+            if (yStudyGroup.getText().isBlank()){
+                throw new InputException("nullFieldException");
+            }
             coordinates.setY(Double.parseDouble(yStudyGroup.getText()));
             studyGroupProcessing.checkYCoordinatesStudyGroup(coordinates.getY());
             yStudyGroupException.setText("");
         } catch (InputException e) {
             indicator = true;
-            yStudyGroupException.setText(e.getMessage());
+            yStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString(e.getMessage()));
         } catch (Exception e){
             indicator = true;
             yStudyGroupException.setText(ResourceBundleSingleton.getResourceBundle().getString("nullFieldException"));
