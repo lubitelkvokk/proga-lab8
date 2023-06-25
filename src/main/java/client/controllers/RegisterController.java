@@ -50,14 +50,15 @@ public class RegisterController implements Initializable {
         Message request = new Message(CommandsEnum.REGISTER_USER);
         Message response = StartClient.sendMessageAndGetResponse(request);
         if (response.getCommand().equals(CommandsEnum.RESPONSE_ERR)) {
-            registerError.setText(response.getData());
+            registerError.setText(ResourceBundleSingleton.getResourceBundle().getString(response.getData()));
         } else {
-            StartClient.changeScene("/com/example/lab8/MainPage.fxml");
+            StartClient.changeScene("/com/example/lab8/MainPageNew.fxml");
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initLanguage();
         languages.getItems().addAll(Languages.getLanguages());
         languages.setOnAction(this::changeLanguage);
     }
@@ -65,6 +66,11 @@ public class RegisterController implements Initializable {
     public void changeLanguage(ActionEvent event) {
         String language = languages.getValue();
         ResourceBundleSingleton.setResourceBundle(BundleFabric.getLocale("com.example.lab8.locale.locale", language));
+
+
+    }
+
+    public void initLanguage(){
         ResourceBundle resourceBundle = ResourceBundleSingleton.getResourceBundle();
         registration.setText(resourceBundle.getString("registration"));
         login.setText(resourceBundle.getString("login"));

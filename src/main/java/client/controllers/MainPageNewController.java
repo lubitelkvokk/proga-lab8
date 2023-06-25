@@ -36,6 +36,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
@@ -106,6 +108,12 @@ public class MainPageNewController implements Initializable {
     private Label user;
 
     @FXML
+    private Button executeScriptButton;
+
+    @FXML
+    private Button signOutButton;
+
+    @FXML
     private Button visualButton;
 
     private SortedList<StudyGroupTableView> sortedList;
@@ -135,79 +143,104 @@ public class MainPageNewController implements Initializable {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
+
+
         // столбец для вывода id
         TableColumn<StudyGroupTableView, Integer> idColumn = new TableColumn<>("id");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
         studyGroupsTable.getColumns().add(idColumn);
+
 
         // столбец для имени владельца
         TableColumn<StudyGroupTableView, String> userColumn = new TableColumn<>("user");
         userColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         studyGroupsTable.getColumns().add(userColumn);
-
+        userColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         // столбец для вывода названия группы
         TableColumn<StudyGroupTableView, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         studyGroupsTable.getColumns().add(nameColumn);
+        nameColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
+        // столбец для вывода времени создания
+        TableColumn<StudyGroupTableView, String> creationDateColumn = new TableColumn<>("CreationDate");
+        creationDateColumn.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        studyGroupsTable.getColumns().add(creationDateColumn);
+        creationDateColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         // столбец для вывода информации об админе группы
         TableColumn<StudyGroupTableView, Long> xCoord = new TableColumn<>("x");
         xCoord.setCellValueFactory(new PropertyValueFactory<>("x"));
         studyGroupsTable.getColumns().add(xCoord);
+        xCoord.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, Double> yCoord = new TableColumn<>("y");
         yCoord.setCellValueFactory(new PropertyValueFactory<>("y"));
         studyGroupsTable.getColumns().add(yCoord);
+        yCoord.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, Integer> studentsCountColumn = new TableColumn<>("studentsCount");
         studentsCountColumn.setCellValueFactory(new PropertyValueFactory<>("studentsCount"));
         studyGroupsTable.getColumns().add(studentsCountColumn);
+        studentsCountColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, Integer> shouldBeExpelledColumn = new TableColumn<>("shouldBeExpelled");
         shouldBeExpelledColumn.setCellValueFactory(new PropertyValueFactory<>("shouldBeExpelled"));
         studyGroupsTable.getColumns().add(shouldBeExpelledColumn);
+        shouldBeExpelledColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, Integer> transferredStudentsColumn = new TableColumn<>("transferredStudents");
         transferredStudentsColumn.setCellValueFactory(new PropertyValueFactory<>("transferredStudents"));
         studyGroupsTable.getColumns().add(transferredStudentsColumn);
+        transferredStudentsColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, Semester> semesterEnumColumn = new TableColumn<>("semesterEnum");
         semesterEnumColumn.setCellValueFactory(new PropertyValueFactory<>("semesterEnum"));
         studyGroupsTable.getColumns().add(semesterEnumColumn);
+        semesterEnumColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, String> nameGroupAdminColumn = new TableColumn<>("nameGroupAdmin");
         nameGroupAdminColumn.setCellValueFactory(new PropertyValueFactory<>("nameGroupAdmin"));
         studyGroupsTable.getColumns().add(nameGroupAdminColumn);
+        nameGroupAdminColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, Long> heightGroupAdminColumn = new TableColumn<>("heightGroupAdmin");
         heightGroupAdminColumn.setCellValueFactory(new PropertyValueFactory<>("heightGroupAdmin"));
         studyGroupsTable.getColumns().add(heightGroupAdminColumn);
+        heightGroupAdminColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, String> passportIDGroupAdminColumn = new TableColumn<>("passportIDGroupAdmin");
         passportIDGroupAdminColumn.setCellValueFactory(new PropertyValueFactory<>("passportIDGroupAdmin"));
         studyGroupsTable.getColumns().add(passportIDGroupAdminColumn);
+        passportIDGroupAdminColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, Color> eyeColorGroupAdminColumn = new TableColumn<>("eyeColorGroupAdmin");
         eyeColorGroupAdminColumn.setCellValueFactory(new PropertyValueFactory<>("eyeColorGroupAdmin"));
         studyGroupsTable.getColumns().add(eyeColorGroupAdminColumn);
+        eyeColorGroupAdminColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, Float> xLocationColumn = new TableColumn<>("xLocation");
         xLocationColumn.setCellValueFactory(new PropertyValueFactory<>("xLocation"));
         studyGroupsTable.getColumns().add(xLocationColumn);
+        xLocationColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, Float> yLocationColumn = new TableColumn<>("yLocation");
         yLocationColumn.setCellValueFactory(new PropertyValueFactory<>("yLocation"));
         studyGroupsTable.getColumns().add(yLocationColumn);
+        yLocationColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, Integer> zLocationColumn = new TableColumn<>("zLocation");
         zLocationColumn.setCellValueFactory(new PropertyValueFactory<>("zLocation"));
         studyGroupsTable.getColumns().add(zLocationColumn);
+        zLocationColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
 
         TableColumn<StudyGroupTableView, String> nameLocationColumn = new TableColumn<>("nameLocation");
         nameLocationColumn.setCellValueFactory(new PropertyValueFactory<>("nameLocation"));
         studyGroupsTable.getColumns().add(nameLocationColumn);
+        nameLocationColumn.setStyle("-fx-text-fill: white; -fx-background-color:black");
+
 
         inputSearchingGroup.textProperty().addListener((observable, oldValue, newValue) ->
         {
@@ -221,7 +254,7 @@ public class MainPageNewController implements Initializable {
                     return true;
                 }
 
-                if (studyGroupSearchModel.getUsername().toLowerCase().equals(searchKeyword)){
+                if (studyGroupSearchModel.getUsername().toLowerCase().equals(searchKeyword)) {
                     return true;
                 }
                 return false;
@@ -230,7 +263,7 @@ public class MainPageNewController implements Initializable {
         sortedList = new SortedList<>(filteredList);
         try {
             sortedList.comparatorProperty().bind(studyGroupsTable.comparatorProperty());
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
@@ -245,6 +278,7 @@ public class MainPageNewController implements Initializable {
             response = StartClient.sendMessageAndGetResponse(message);
             LinkedList<StudyGroupTableView> studyGroupTableViews = new LinkedList<>();
             for (StudyGroup x : response.getStudyGroups()) {
+
                 studyGroupTableViews.add(StudyGroupToTableViewConverter.getTableView(x));
             }
             // Create new filtered list with current predicate
@@ -285,7 +319,7 @@ public class MainPageNewController implements Initializable {
                                 MessageFabric.createMessage(
                                         CommandsEnum.REMOVE_BY_ID,
                                         id_db));
-        if (response.getCommand().equals(CommandsEnum.RESPONSE_ERR)){
+        if (response.getCommand().equals(CommandsEnum.RESPONSE_ERR)) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ResourceBundleSingleton.getResourceBundle().getString("removeByIdError"));
             alert.show();
         }
@@ -297,24 +331,25 @@ public class MainPageNewController implements Initializable {
         StudyGroupTableView studyGroupTableView = studyGroupsTable.getSelectionModel().getSelectedItem();
         SavedForEditingStudyGroup.setStudyGroupTableView(studyGroupTableView);
         Message request = MessageFabric.createMessage(CommandsEnum.UPDATE, TableViewToStudyGroup.getStudyGroup(studyGroupTableView));
-        System.out.println(request.getStudyGroup());
+//        System.out.println(request.getStudyGroup());
         Message response = null;
         try {
             response = StartClient.sendMessageAndGetResponse(request);
-            System.out.println(response.getData());
+//            System.out.println(response.getData());
+            if (response != null && !response.getCommand().equals(CommandsEnum.RESPONSE_ERR)) {
+                Parent root = FXMLLoader.load(getClass().getResource("/com/example/lab8/EditingGroupPage.fxml"));
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR,
+                        ResourceBundleSingleton.getResourceBundle().getString("ownerError"));
+                alert.show();
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        if (response != null && !response.getCommand().equals(CommandsEnum.RESPONSE_ERR)) {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/lab8/EditingGroupPage.fxml"));
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR,
-                    ResourceBundleSingleton.getResourceBundle().getString("ownerError"));
-            alert.show();
-        }
+
     }
 
     @FXML
@@ -340,12 +375,13 @@ public class MainPageNewController implements Initializable {
     @FXML
     public void changeLanguage(ActionEvent event) {
         String language = languages.getValue();
+        languages.setValue(language);
         System.out.println(language);
         ResourceBundleSingleton.setResourceBundle(BundleFabric.getLocale("com.example.lab8.locale.locale", language));
         languageValuesInit();
     }
 
-    private void languageValuesInit(){
+    private void languageValuesInit() {
         ResourceBundle resourceBundle = ResourceBundleSingleton.getResourceBundle();
         addButton.setText(resourceBundle.getString("addButton"));
         addIfMinButton.setText(resourceBundle.getString("addIfMinButton"));
@@ -359,6 +395,7 @@ public class MainPageNewController implements Initializable {
         minByNameButton.setText(resourceBundle.getString("minByNameButton"));
         averageOfShouldBeExpelledButton.setText(resourceBundle.getString("averageOfShouldBeExpelledButton"));
         currentUser.setText(resourceBundle.getString("currentUser"));
+        signOutButton.setText(resourceBundle.getString("signOutButton"));
     }
 
     @FXML
@@ -465,6 +502,20 @@ public class MainPageNewController implements Initializable {
     @FXML
     private void getVisualPage() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/lab8/MapPage.fxml"));
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    @FXML
+    private void signOut() throws IOException {
+        UserAuth.setUser(null);
+        StartClient.changeScene("/com/example/lab8/LoginPage.fxml");
+    }
+
+    @FXML
+    private void executeScript() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/lab8/ScriptPage.fxml"));
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.show();

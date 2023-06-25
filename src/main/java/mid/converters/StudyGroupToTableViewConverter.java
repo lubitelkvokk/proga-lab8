@@ -1,14 +1,22 @@
 package mid.converters;
 
+import client.global.ResourceBundleSingleton;
 import mid.data.StudyGroup;
 import mid.data.StudyGroupTableView;
+
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 public class StudyGroupToTableViewConverter {
 
     public static StudyGroupTableView getTableView(StudyGroup studyGroup){
         StudyGroupTableView studyGroupTableView = new StudyGroupTableView();
         studyGroupTableView.setId(studyGroup.getId());
-        studyGroupTableView.setCreationDate(studyGroup.getCreationDate());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.
+                ofLocalizedDateTime(FormatStyle.LONG).
+                withLocale(ResourceBundleSingleton.getResourceBundle().getLocale());
+        studyGroupTableView.setCreationDate(studyGroup.getCreationDate().format(dateTimeFormatter));
+        studyGroupTableView.setZonedDateTime(studyGroup.getCreationDate());
         studyGroupTableView.setName(studyGroup.getName());
         studyGroupTableView.setStudentsCount(studyGroup.getStudentsCount());
         studyGroupTableView.setShouldBeExpelled(studyGroup.getShouldBeExpelled());

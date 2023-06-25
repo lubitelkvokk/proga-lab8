@@ -18,6 +18,15 @@ public class BundleFabric {
             case "pt":
                 locale = new Locale("pt");
                 break;
+            case "is":
+                locale = new Locale("is");
+                break;
+            case "en_IA":
+                locale = new Locale("en","IE");
+                break;
+            case "pl":
+                locale = new Locale("pl");
+                break;
             default:
                 locale = Locale.getDefault();
         }

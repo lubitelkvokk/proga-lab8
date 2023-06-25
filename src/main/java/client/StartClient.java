@@ -34,13 +34,12 @@ public class StartClient extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
+        stage.centerOnScreen();
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/lab8/LoginPage.fxml"));
         stage.setScene(new Scene(root));
         mainStage = stage;
         mainStage.show();
     }
-
 
     public static Message sendMessageAndGetResponse(Message message) throws IOException, ClassNotFoundException {
         message.setUser(UserAuth.getUser());
@@ -48,11 +47,14 @@ public class StartClient extends Application {
         return MessageGetter.getMessage(client);
     }
 
-
     public static void changeScene(String fxmlFile) throws IOException {
         Parent root = FXMLLoader.load(StartClient.class.getResource(fxmlFile));
         Scene scene = new Scene(root);
         mainStage.setScene(scene);
+    }
+
+    public static Stage getStage() throws IOException {
+        return mainStage;
     }
 
 }

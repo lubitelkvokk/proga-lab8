@@ -27,7 +27,7 @@ public class StudyGroupProcessing {
 
     public void checkYCoordinatesStudyGroup(Double y) throws InputException {
         if (y == null || y < 0 || y > 600) {
-            throw new InputException(resourceBundle.getString("yCoordinatesStudyGroupException"));
+            throw new InputException("yCoordinatesStudyGroupException");
         }
     }
 

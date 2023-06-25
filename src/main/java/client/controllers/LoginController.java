@@ -57,6 +57,8 @@ public class LoginController implements Initializable {
             loginError.setText(
                     ResourceBundleSingleton.getResourceBundle().getString(response.getData()));
         } else {
+            StartClient.getStage().setX(20);
+
             StartClient.changeScene("/com/example/lab8/MainPageNew.fxml");
         }
     }

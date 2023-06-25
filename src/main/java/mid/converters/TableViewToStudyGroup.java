@@ -7,7 +7,7 @@ public class TableViewToStudyGroup {
     public static StudyGroup getStudyGroup(StudyGroupTableView studyGroupTableView){
         StudyGroup studyGroup = new StudyGroup();
         studyGroup.setId(studyGroupTableView.getId());
-        studyGroup.setCreationDate(studyGroupTableView.getCreationDate());
+        studyGroup.setCreationDate(studyGroupTableView.getZonedDateTime());
         studyGroup.setName(studyGroupTableView.getName());
         studyGroup.setStudentsCount(studyGroupTableView.getStudentsCount());
         studyGroup.setTransferredStudents(studyGroupTableView.getTransferredStudents());

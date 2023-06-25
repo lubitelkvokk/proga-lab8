@@ -16,7 +16,8 @@ public class StudyGroupTableView {
 
     private Long x;
     private Double y;
-    private ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private ZonedDateTime zonedDateTime;
+    private String creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private Integer studentsCount; //Значение поля должно быть больше 0
     private Integer shouldBeExpelled; //Значение поля должно быть больше 0
     private Integer transferredStudents; //Значение поля должно быть больше 0
